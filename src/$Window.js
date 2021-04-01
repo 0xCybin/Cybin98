@@ -1,3 +1,12 @@
+(function(exports) {
+
+// TODO: E\("([a-z]+)"\) -> "<$1>" or get rid of jQuery as a dependency
+function E(t){
+	return document.createElement(t);
+}
+
+var $G = $(window);
+
 
 $Window.Z_INDEX = 5;
 
@@ -109,6 +118,7 @@ function $Window(options){
 
 		const instantly_maximize = ()=> {
 			before_maximize = {
+				position: $w.css("position"),
 				left: $w.css("left"),
 				top: $w.css("top"),
 				width: $w.css("width"),
@@ -116,11 +126,16 @@ function $Window(options){
 			};
 			
 			$w.addClass("maximized");
+			const $taskbar = $(".taskbar");
+			const scrollbar_width = window.innerWidth - $(window).width();
+			const scrollbar_height = window.innerHeight - $(window).height();
+			const taskbar_height = $taskbar.length ? $taskbar.height() + 1 : 0;
 			$w.css({
+				position: "fixed",
 				top: 0,
 				left: 0,
-				width: "100vw",
-				height: `calc(100vh - ${$(".taskbar").height() + 1}px)`,
+				width: `calc(100vw - ${scrollbar_width}px)`,
+				height: `calc(100vh - ${scrollbar_height}px - ${taskbar_height}px)`,
 			});
 		};
 		const instantly_unmaximize = ()=> {
@@ -128,6 +143,7 @@ function $Window(options){
 			$w.css({width: "", height: ""});
 			if (before_maximize) {
 				$w.css({
+					position: before_maximize.position,
 					left: before_maximize.left,
 					top: before_maximize.top,
 					width: before_maximize.width,
@@ -242,15 +258,15 @@ function $Window(options){
 	
 	$w.applyBounds = function(){
 		$w.css({
-			left: Math.max(0, Math.min(innerWidth - $w.width(), $w.position().left)),
-			top: Math.max(0, Math.min(innerHeight - $w.height(), $w.position().top)),
+			left: Math.max(0, Math.min(document.body.scrollWidth - $w.width(), $w.position().left)),
+			top: Math.max(0, Math.min(document.body.scrollHeight - $w.height(), $w.position().top)),
 		});
 	};
 	
 	$w.center = function(){
 		$w.css({
-			left: (innerWidth - $w.width()) / 2,
-			top: (innerHeight - $w.height()) / 2,
+			left: (innerWidth - $w.width()) / 2 + window.scrollX,
+			top: (innerHeight - $w.height()) / 2 + window.scrollY,
 		});
 		$w.applyBounds();
 	};
@@ -259,10 +275,13 @@ function $Window(options){
 	$G.on("resize", $w.applyBounds);
 	
 	var drag_offset_x, drag_offset_y;
-	var drag = function(e){
+	var mouse_x, mouse_y;
+	var update_drag = function(e){
+		mouse_x = e.clientX != null ? e.clientX : mouse_x;
+		mouse_y = e.clientY != null ? e.clientY : mouse_y;
 		$w.css({
-			left: e.clientX - drag_offset_x,
-			top: e.clientY - drag_offset_y,
+			left: mouse_x + scrollX - drag_offset_x,
+			top: mouse_y + scrollY - drag_offset_y,
 		});
 	};
 	$w.$titlebar.attr("touch-action", "none");
@@ -276,12 +295,17 @@ function $Window(options){
 		if ($w.hasClass("maximized")) {
 			return;
 		}
-		drag_offset_x = e.clientX - $w.position().left;
-		drag_offset_y = e.clientY - $w.position().top;
-		$G.on("pointermove", drag);
+		drag_offset_x = e.clientX + scrollX - $w.position().left;
+		drag_offset_y = e.clientY + scrollY - $w.position().top;
+		$G.on("pointermove", update_drag);
+		$G.on("scroll", update_drag);
+		$("body").addClass("dragging"); // for when mouse goes over an iframe
 	});
 	$G.on("pointerup", function(e){
-		$G.off("pointermove", drag);
+		$G.off("pointermove", update_drag);
+		$G.off("scroll", update_drag);
+		$("body").removeClass("dragging");
+		// $w.applyBounds();
 	});
 	$w.$titlebar.on("dblclick", function(e){
 		if($component){
@@ -335,7 +359,7 @@ function $Window(options){
 		const duration = `${durationMS}ms`;
 		$eye_leader.css({
 			transition: `left ${duration} linear, top ${duration} linear, width ${duration} linear, height ${duration} linear`,
-			position: "absolute",
+			position: "fixed",
 			zIndex: 10000000,
 			pointerEvents: "none",
 			left: from.left,
@@ -389,7 +413,7 @@ function $Window(options){
 		$w.center();
 	}
 	
-	mustHaveMethods($w, windowInterfaceMethods);
+	// mustHaveMethods($w, windowInterfaceMethods);
 	
 	return $w;
 }
@@ -420,4 +444,9 @@ function $FormWindow(title){
 	};
 
 	return $w;
-};
+}
+
+exports.$Window = $Window;
+exports.$FormWindow = $FormWindow;
+
+})(window);
