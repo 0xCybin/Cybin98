@@ -258,7 +258,12 @@ body > .window-titlebar {
 	font-family: 'Segoe UI', sans-serif;
 	font-size: 12px;
 }
-.os-window:not(.tool-window) .window-titlebar {
+.os-window.rtl .window-titlebar {
+	background: linear-gradient(to left, rgb(0, 0, 128) 0%, rgb(16, 132, 208) 100%);
+	background: linear-gradient(to left, var(--ActiveTitle) 0%, var(--GradientActiveTitle) 100%);
+}
+.os-window:not(.tool-window) .window-titlebar,
+body > .window-titlebar {
 	font-weight: bold;
 }
 .os-window:not(.focused) .window-titlebar {
@@ -269,6 +274,10 @@ body > .window-titlebar {
 	color: rgb(192, 192, 192);
 
 	color: var(--InactiveTitleText);
+}
+.os-window.rtl:not(.focused) .window-titlebar {
+	background: linear-gradient(to left, rgb(128, 128, 128) 0%, rgb(181, 181, 181) 100%);
+	background: linear-gradient(to left, var(--InactiveTitle) 0%, var(--GradientInactiveTitle) 100%);
 }
 .os-window {
 	/* Needed for when maximized, otherwise would be provided by %outset-deep */
@@ -389,7 +398,8 @@ body > .window-titlebar {
 .window-maximize-button {
 	background-position: calc(-1 * 13px - 1px) 0px;
 }
-.maximized .window-maximize-button {
+.maximized .window-maximize-button,
+.minimized-without-taskbar .window-maximize-button {
 	background-position: calc(-2 * 13px - 1px) 0px;
 }
 .window-minimize-button {
@@ -402,7 +412,8 @@ body > .window-titlebar {
 .window-maximize-button:enabled:hover:active {
 	background-position: calc(-1 * 13px - 0px) 1px;
 }
-.maximized .window-maximize-button:enabled:hover:active {
+.maximized .window-maximize-button:enabled:hover:active,
+.minimized-without-taskbar .window-maximize-button:enabled:hover:active {
 	background-position: calc(-2 * 13px - 0px) 1px;
 }
 .window-minimize-button:enabled:hover:active {
@@ -424,9 +435,6 @@ body > .window-titlebar {
 	font-family: 'Segoe UI', sans-serif;
 	font-size: 12px;
 }
-.menu-container {
-	margin-bottom: 1px;
-}
 .menu-button {
 	box-sizing: border-box;
 	height: 18px;
@@ -440,7 +448,8 @@ body > .window-titlebar {
 	background: rgb(192, 192, 192);
 	background: var(--Menu);
 }
-.menu-button:hover {
+.menu-button:hover,
+.menu-button:focus {
 	box-shadow: 1px 1px 0 rgb(255, 255, 255) inset, -1px -1px 0 rgb(128, 128, 128) inset;
 	box-shadow: 1px 1px 0 var(--ButtonHilight) inset, -1px -1px 0 var(--ButtonShadow) inset;
 }
@@ -481,12 +490,15 @@ body > .window-titlebar {
 	text-shadow: 0.8px 0.8px 0px rgb(255, 255, 255);
 	text-shadow: 0.8px 0.8px 0px var(--ButtonHilight);
 }
+.menu-item:focus:not([disabled]),
+.menu-item.active:not([disabled]) {
+	color: rgb(255, 255, 255);
+	color: var(--HilightText);
+}
 .menu-item:focus,
 .menu-item.active {
 	background: rgb(0, 0, 128);
 	background: var(--Hilight);
-	color: rgb(255, 255, 255);
-	color: var(--HilightText);
 	text-shadow: none;
 	outline: 0;
 }
