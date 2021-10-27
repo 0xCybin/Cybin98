@@ -8,10 +8,17 @@ function Task(win){
 	};
 
 	let $icon;
-	this.updateIcon = ()=> {
-		const icon_name = win.getIconName() || "task";
+	this.updateIcon = () => {
 		const old_$icon = $icon;
-		$icon = $Icon(icon_name, TASKBAR_ICON_SIZE);
+		if (win.$icon) {
+			// @TODO: handle different icon sizes between taskbar and titlebar
+			$icon = win.$icon.clone();
+		} else if (win.getIconName && win.getIconName()) {
+			// currently only used for Winamp
+			$icon = $("<img/>").attr("src", "images/icons/" + win.getIconName() + "-16x16.png");
+		} else {
+			$icon = $("<img src='images/icons/task.png'/>");
+		}
 		if (old_$icon) {
 			old_$icon.replaceWith($icon);
 		} else {
