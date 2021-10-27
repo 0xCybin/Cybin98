@@ -725,7 +725,14 @@ function openWinamp(file_path){
 			winamp_interface.onFocus = makeSimpleListenable("focus");
 			winamp_interface.onBlur = makeSimpleListenable("blur");
 			winamp_interface.onClosed = makeSimpleListenable("closed");
-			winamp_interface.getIconName = ()=> "winamp2";
+			winamp_interface.getIconAtSize = (target_icon_size) => {
+				if (target_icon_size !== 32 && target_icon_size !== 16) {
+					target_icon_size = 32;
+				}
+				const img = document.createElement("img");
+				img.src = getIconPath("winamp2", target_icon_size);
+				return img;
+			};
 			winamp_interface.bringToFront = ()=> {
 				$webamp.css({
 					zIndex: $Window.Z_INDEX++
