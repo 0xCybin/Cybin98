@@ -1,7 +1,7 @@
 function show_help(options){
 	const $help_window = $Window({
 		title: options.title || "Help Topics",
-		icon: "chm",
+		icons: { 16: "images/icons/chm-16x16.png", 32: "images/icons/chm-32x32.png" },
 	})
 	$help_window.addClass("help-window");
 
@@ -245,7 +245,7 @@ function Notepad(file_path){
 
 	var $win = new $IframeWindow({
 		src: "programs/notepad/index.html" + (file_path ? ("?path=" + file_path) : ""),
-		icon: "notepad",
+		icons: { 16: "images/icons/notepad-16x16.png", 32: "images/icons/notepad-32x32.png" },
 		title: win_title,
 		outerWidth: 480,
 		outerHeight: 321,
@@ -258,7 +258,7 @@ Notepad.acceptsFilePaths = true;
 function Paint(file_path){
 	var $win = new $IframeWindow({
 		src: "programs/jspaint/index.html",
-		icon: "paint",
+		icons: { 16: "images/icons/paint-16x16.png", 32: "images/icons/paint-32x32.png" },
 		// NOTE: in Windows 98, "untitled" is lowercase, but TODO: we should just make it consistent
 		title: "untitled - Paint",
 		outerWidth: 275,
@@ -353,7 +353,7 @@ Paint.acceptsFilePaths = true;
 function Minesweeper(){
 	var $win = new $IframeWindow({
 		src: "programs/minesweeper/index.html",
-		icon: "minesweeper",
+		icons: { 16: "images/icons/minesweeper-16x16.png", 32: "images/icons/minesweeper-32x32.png" },
 		title: "Minesweeper",
 		innerWidth: 280,
 		innerHeight: 320 + 21,
@@ -369,7 +369,7 @@ function SoundRecorder(file_path){
 	// TODO: focus existing window if file is currently open?
 	var $win = new $IframeWindow({
 		src: "programs/sound-recorder/index.html" + (file_path ? ("?path=" + file_path) : ""),
-		icon: "speaker",
+		icons: { 16: "images/icons/speaker-16x16.png", 32: "images/icons/speaker-32x32.png" },
 		title: win_title,
 		innerWidth: 270,
 		innerHeight: 108 + 21,
@@ -383,7 +383,7 @@ SoundRecorder.acceptsFilePaths = true;
 function Solitaire() {
 	var $win = new $IframeWindow({
 		src: "programs/js-solitaire/index.html",
-		icon: "solitaire",
+		icons: { 16: "images/icons/solitaire-16x16.png", 32: "images/icons/solitaire-32x32.png" },
 		title: "Solitaire",
 		innerWidth: 585,
 		innerHeight: 384 + 21,
@@ -468,7 +468,7 @@ function FlowerBox() {
 function CommandPrompt() {
 	var $win = new $IframeWindow({
 		src: "programs/command/index.html",
-		icon: "msdos",
+		icons: { 16: "images/icons/msdos-16x16.png", 32: "images/icons/msdos-32x32.png" },
 		title: "MS-DOS Prompt",
 		// TODO: default dimensions
 		innerWidth: 640,
@@ -516,7 +516,7 @@ function CommandPrompt() {
 function Calculator() {
 	var $win = new $IframeWindow({
 		src: "programs/calculator/index.html",
-		icon: "calculator",
+		icons: { 16: "images/icons/calculator-16x16.png", 32: "images/icons/calculator-32x32.png" },
 		title: "Calculator",
 		innerWidth: 256,
 		innerHeight: 208 + 21,
@@ -533,7 +533,7 @@ function Explorer(address){
 	// TODO: focus existing window if folder is currently open
 	var $win = new $IframeWindow({
 		src: "programs/explorer/index.html" + (address ? ("?address=" + encodeURIComponent(address)) : ""),
-		icon: "folder-open",
+		icons: { 16: "images/icons/folder-open-16x16.png", 32: "images/icons/folder-open-32x32.png" },
 		title: win_title,
 		innerWidth: 500,
 		innerHeight: 500 + 21,
