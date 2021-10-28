@@ -392,31 +392,29 @@ body > .window-titlebar {
 	padding: 0;
 }
 
-.window-close-button {
+.window-action-close {
 	background-position: calc(-3 * 13px - 1px) 0px;
 }
-.window-maximize-button {
+.window-action-maximize {
 	background-position: calc(-1 * 13px - 1px) 0px;
 }
-.maximized .window-maximize-button,
-.minimized-without-taskbar .window-maximize-button {
+.window-action-restore {
 	background-position: calc(-2 * 13px - 1px) 0px;
 }
-.window-minimize-button {
+.window-action-minimize {
 	background-position: calc(-0 * 13px - 1px) 0px;
 }
 
-.window-close-button:enabled:hover:active {
+.window-action-close:enabled:hover:active {
 	background-position: calc(-3 * 13px - 0px) 1px;
 }
-.window-maximize-button:enabled:hover:active {
+.window-action-maximize:enabled:hover:active {
 	background-position: calc(-1 * 13px - 0px) 1px;
 }
-.maximized .window-maximize-button:enabled:hover:active,
-.minimized-without-taskbar .window-maximize-button:enabled:hover:active {
+.window-action-restore:enabled:hover:active {
 	background-position: calc(-2 * 13px - 0px) 1px;
 }
-.window-minimize-button:enabled:hover:active {
+.window-action-minimize:enabled:hover:active {
 	background-position: calc(-0 * 13px - 0px) 1px;
 }
 
@@ -448,13 +446,15 @@ body > .window-titlebar {
 	background: rgb(192, 192, 192);
 	background: var(--Menu);
 }
-.menu-button:hover,
-.menu-button:focus {
+/* Note: In Windows 98, normal menu bars have an inset highlight if you use Esc and then the arrow keys,
+whereas Explorer's menu bars are outset and match the hover effect, which I feel makes more sense,
+so I think I'll immitate that. */
+/* Also, to prevent duplicate highlight, and lingering highlight with touch, I'm using a class, rather than :hover/:focus/:active */
+.menu-button.highlight {
 	box-shadow: 1px 1px 0 rgb(255, 255, 255) inset, -1px -1px 0 rgb(128, 128, 128) inset;
 	box-shadow: 1px 1px 0 var(--ButtonHilight) inset, -1px -1px 0 var(--ButtonShadow) inset;
 }
-.menu-button:active,
-.menu-button.active {
+.menu-button.highlight.active {
 	box-shadow: 1px 1px 0 rgb(128, 128, 128) inset, -1px -1px 0 rgb(255, 255, 255) inset;
 	box-shadow: 1px 1px 0 var(--ButtonShadow) inset, -1px -1px 0 var(--ButtonHilight) inset;
 	top: 1px;
